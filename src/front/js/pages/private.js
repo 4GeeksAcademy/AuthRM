@@ -4,6 +4,21 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export const Private = () => {
+
+    const navigate = useNavigate()
+    const { store, actions } = useContext(Context);
+
+    function VerifyToken () {
+        token = localStorage.getItem("jwt-token")
+        if (token == ""){
+            navigate("/login")
+        }
+    }
+
+    useEffect(() => {
+        VerifyToken()
+      }, []);
+    
     return(
         <div>
             <div>This is a private page</div>
