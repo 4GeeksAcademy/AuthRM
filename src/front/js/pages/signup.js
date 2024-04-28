@@ -25,7 +25,7 @@ export const SignUp = () => {
             </div>
             <button type="submit" className="btn btn-primary" onClick={async () => {
                 if ( await actions.signup(email, password) == "success"){
-                    navigate("/private")
+                    navigate("/login")
                 }
                 else(
                     console.log("Please try again")

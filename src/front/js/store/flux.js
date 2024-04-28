@@ -47,64 +47,62 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
-			login: async (email, password) => {
+			login: async (email, password, navigate) => {
 				const loginURL = process.env.BACKEND_URL + "/login";
-				let status = "error"
-
-				fetch(loginURL, {
-					method: "POST",
-					mode: 'no-cors',
-					headers: {'Content-Type': 'application/json'},
-					body: JSON.stringify({
-						"email": email,
-						"password": password
-					}), 
-				})
-				.then (response => {
-					return response.json();
-				})
-				.then(data => {
-					if (data?.status == "success"){
-						localStorage.setItem("jwt-token", data?.token)
-						status = data?.status
-					}
-					else{
-						console.log("Invalid email or password")
-					}
-				})
-				.catch(error => {
-				
-				})
-
-				console.log("fetch: ", status)
-				return (status)
-			},
-
-			signup: async (email, password) => {
-
-				const signupURL = process.env.BACKEND_URL + "/signup";
 				let status = "error";
-				const userData = {"email": email, "password": password}
-				
-				await fetch(signupURL, {
+			
+				await fetch(loginURL, {
 					method: "POST",
-					mode: 'no-cors',
-					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify({userData})
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						email: email,
+						password: password
+					})
 				})
 				.then(response => {
 					return response.json();
 				})
 				.then(data => {
-					console.log("data: ", data)
-					if (data?.status == "success"){
-						status =  data?.status
+					if (data?.status === "success") {
+						localStorage.setItem("jwt-token", data?.token);
+						navigate("/private")
+						status = data?.status;
+					} else {
+						console.log("Invalid email or password");
 					}
 				})
 				.catch(error => {
-				})
+					console.error("Error:", error);
+				});
+			
+				console.log("fetch: ", status);
+				return status;
+			},
 
-				return(status)
+			signup: async (email, password) => {
+				const signupURL = process.env.BACKEND_URL + "/signup";
+				let status = "error";
+				const userData = { email: email, password: password };
+			
+				await fetch(signupURL, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(userData)
+				})
+				.then(response => {
+					return response.json();
+				})
+				.then(data => {
+					console.log("data: ", data);
+					if (data?.status === "success") {
+						status = data.status;
+					}
+				})
+				.catch(error => {
+					console.error("Error:", error);
+				});
+			
+				return status;
 			},
 
 			logout: () => {

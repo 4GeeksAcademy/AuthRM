@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 
 export const Login = () => {
-    const { store, actions } = useContext(Context);
+    const { actions } = useContext(Context);
     const navigate = useNavigate();
 
     const [email, setEmail] = useState();
@@ -24,17 +24,8 @@ export const Login = () => {
                 <input type="password" className="form-control" id="exampleInputPassword1" name ="password" onChange={(e) => setPassword(e.target.value)}></input>
             </div>
             <button type="submit" className="btn btn-primary" onClick={() => {
-                if (actions.login(email, password) == "success"){
-                    navigate("/private")
-                }
-                else{
-                    console.log("Incorrect email or password")
-                }
+                actions.login(email, password, navigate)
             }}>Submit</button>
-            <div className="my-3">
-                <a>Don't have an account?</a><br></br>
-                <button onClick={() => {navigate("/signup")}}>Create account</button>
-            </div>
         </div>
     );
 }

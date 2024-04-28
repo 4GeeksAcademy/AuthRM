@@ -1,7 +1,8 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect , useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
+import "../../styles/private.css";
 
 export const Private = () => {
 
@@ -9,7 +10,7 @@ export const Private = () => {
     const { store, actions } = useContext(Context);
 
     function VerifyToken () {
-        token = localStorage.getItem("jwt-token")
+        const token = localStorage.getItem("jwt-token")
         if (token == ""){
             navigate("/login")
         }
@@ -21,11 +22,8 @@ export const Private = () => {
     
     return(
         <div>
-            <div>This is a private page</div>
-            <button onClick={() => {
-                actions.logout()
-                navigate("/login")
-            }}>Log Out</button>
+            <h1 className="private-text">¡Hello, this is a private page!</h1>
+            
         </div>
     )
 }
