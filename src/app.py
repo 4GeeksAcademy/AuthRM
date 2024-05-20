@@ -121,6 +121,22 @@ def login():
        return jsonify({"error": "Incorrect password"}), 400
   else:  
        return jsonify({"error": "User doesn't exist"}), 401
+
+
+@app.route('/private', methods=['GET'])
+@jwt_required()
+def get():
+ user = get_jwt_identity()
+ print(user)
+
+ return jsonify ({
+          "status": "success",
+          "user": user
+        }), 200
+ 
+@app.errorhandler(APIException)
+def handle_invalid_usage(error):
+    return jsonify(error.to_dict()), error.status_code
   
 
 @app.route('/<path:path>', methods=['GET'])
